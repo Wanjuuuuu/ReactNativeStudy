@@ -15,7 +15,6 @@ export default class ToDo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCompleted: false,
       isEditing: false,
       toDoValue: props.text
     };
@@ -25,12 +24,15 @@ export default class ToDo extends React.Component {
     text: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool.isRequired,
     deleteToDo: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
+    incompleteToDo: PropTypes.func.isRequired,
+    completeToDo: PropTypes.func.isRequired,
+    updateToDo: PropTypes.func.isRequired
   };
 
   render() {
-    const { isCompleted, isEditing, toDoValue } = this.state;
-    const { toDo, text, deleteToDo, id } = this.props;
+    const { isEditing, toDoValue } = this.state;
+    const { text, deleteToDo, isCompleted, id } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>
@@ -92,11 +94,12 @@ export default class ToDo extends React.Component {
     );
   }
   toggleComplete = () => {
-    this.setState(prevState => {
-      return {
-        isCompleted: !prevState.isCompleted
-      };
-    });
+    const { isCompleted, incompleteToDo, completeToDo, id } = this.props;
+    if (isCompleted) {
+      incompleteToDo(id);
+    } else {
+      completeToDo(id);
+    }
   };
   startEditing = () => {
     this.setState({
@@ -104,6 +107,9 @@ export default class ToDo extends React.Component {
     });
   };
   finishEditing = () => {
+    const { toDoValue } = this.state;
+    const { id, updateToDo } = this.props;
+    updateToDo(id, toDoValue);
     this.setState({
       isEditing: false
     });
