@@ -33,8 +33,8 @@ export default class ToDo extends React.Component {
           {isEditing ? (
             <TextInput
               style={[
-                styles.input,
                 styles.text,
+                styles.input,
                 isCompleted ? styles.completedText : styles.incompletedText
               ]}
               value={toDoValue}
@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: width / 2,
-    justifyContent: "space-between"
   },
   actions: {
     flexDirection: "row"
@@ -151,7 +150,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   input: {
-    marginVertical: 20,
-    width: width / 2
   }
 });
