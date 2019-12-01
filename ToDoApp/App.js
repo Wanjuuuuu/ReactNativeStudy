@@ -7,7 +7,8 @@ import {
   TextInput,
   Dimensions,
   Platform,
-  ScrollView
+  ScrollView,
+  AsyncStorage
 } from "react-native";
 import { AppLoading } from "expo";
 import ToDo from "./ToDo";
@@ -48,7 +49,7 @@ export default class App extends React.Component {
             onSubmitEditing={this.addToDo}
           />
           <ScrollView contentContainerStyle={styles.toDos}>
-            {Object.values(toDos).map(toDo => (
+            {Object.values(toDos).reverse().map(toDo => (
               <ToDo
                 key={toDo.id}
                 {...toDo}
@@ -70,7 +71,14 @@ export default class App extends React.Component {
     });
   };
 
-  loadToDo = () => {
+  loadToDo = async () => {
+    try {
+      const toDos = await AsyncStorage.getItem("toDos");
+      const parsedToDos = JSON.parse(toDos);
+      this.setState({ loadedToDos: true, toDos: parsedToDos });
+    } catch (error) {
+      console.log(error);
+    }
     this.setState({
       loadedToDos: true
     });
@@ -97,6 +105,7 @@ export default class App extends React.Component {
             ...newToDoObject
           }
         };
+        this.saveToDos(newState.toDos);
         return { ...newState };
       });
     }
@@ -110,6 +119,7 @@ export default class App extends React.Component {
         ...prevState,
         ...toDos
       };
+      this.saveToDos(newState.toDos);
       return { ...newState };
     });
   };
@@ -129,6 +139,7 @@ export default class App extends React.Component {
           }
         }
       };
+      this.saveToDos(newState.toDos);
       return { ...newState };
     });
   };
@@ -145,8 +156,16 @@ export default class App extends React.Component {
           }
         }
       };
+      this.saveToDos(newState.toDos);
       return { ...newState };
     });
+  };
+
+  saveToDos = newToDos => {
+    const toDosNeedSaved = AsyncStorage.setItem(
+      "toDos",
+      JSON.stringify(newToDos)
+    );
   };
 }
 
