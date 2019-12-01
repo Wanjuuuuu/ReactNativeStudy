@@ -114,23 +114,10 @@ export default class App extends React.Component {
     });
   };
 
-  incompleteToDo = id => {
-    this.setState(prevState => {
-      const newState = {
-        ...prevState,
-        toDos: {
-          ...prevState.toDos,
-          [id]: {
-            ...prevState.toDos[id],
-            isCompleted: false
-          }
-        }
-      };
-      return { ...newState };
-    });
-  };
+  incompleteToDo = id => this.toggleCompletion(id, false);
+  completeToDo = id => this.toggleCompletion(id, true);
 
-  completeToDo = id => {
+  toggleCompletion = (id, isCompleted) => {
     this.setState(prevState => {
       const newState = {
         ...prevState,
@@ -138,7 +125,7 @@ export default class App extends React.Component {
           ...prevState.toDos,
           [id]: {
             ...prevState.toDos[id],
-            isCompleted: true
+            isCompleted: isCompleted
           }
         }
       };
