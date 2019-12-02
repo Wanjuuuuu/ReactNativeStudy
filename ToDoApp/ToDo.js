@@ -56,6 +56,7 @@ export default class ToDo extends React.Component {
               onChangeText={this.controlInput}
               returnKeyType={"done"}
               onBlur={this.finishEditing}
+              underlineColorAndroid={"transparent"}
             />
           ) : (
             <Text
