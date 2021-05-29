@@ -29,7 +29,7 @@
     "eslint-plugin-react": "^7.17.0",
     "mem": "^6.0.1",
     "prop-types": "^15.7.2",
-    "ws": "^7.2.0"
+    "ws": "^7.4.6"
   },
   "private": true
 }
